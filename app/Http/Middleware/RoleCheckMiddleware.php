@@ -13,6 +13,9 @@ class RoleCheckMiddleware
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     *
+     *
+     * For usage please refer to README.md
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
