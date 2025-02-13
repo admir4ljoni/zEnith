@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->decimal('price', 8, 2);
+            $table->string('course_picture')->nullable();
             $table->enum('status', ['draft', 'published', 'archived', 'awaiting'])->default('draft');
 
             // RELATION //
