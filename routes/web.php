@@ -15,21 +15,24 @@ Route::get('/course/1', [CourseController::class, 'show']);
 
 // FOR ADMIN
 Route::get('/dashboard', [CourseController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('/admin/course/create', [CourseController::class, 'create'])->name('admin.course.create');
-Route::get('/admin/course/edit/', [CourseController::class, 'edit'])->name('admin.course.edit');
+Route::get('/admin/course/create-or-edit/{id?}', [CourseController::class, 'edit'])->name('admin.course.edit');
+Route::post('/admin/course/create', [CourseController::class, 'store'])->name('admin.course.store');
+Route::patch('/admin/course/update/{id}', [CourseController::class, 'update'])->name('admin.course.update');
+Route::delete('/admin/course/delete/{id}', [CourseController::class, 'destroy'])->name('admin.course.delete');
 
 Route::get('/admin/course/lesson/create', [LessonController::class, 'edit'])->name('admin.course.lesson.create');
 Route::get('/admin/course/lesson/edit', [LessonController::class, 'edit'])->name('admin.course.lesson.edit');
 
+// Enrollment
 Route::get('/admin/enrollments', [EnrollmentController::class, 'index'])->name('admin.enrollment.index');
 
+// Users
 Route::get('/admin/users', [UserController::class, 'index'])->name('admin.user.index');
 Route::get('/admin/user/create', [UserController::class, 'create'])->name('admin.user.create');
 Route::post('/admin/user/create', [UserController::class, 'store'])->name('admin.user.store');
-Route::get('/admin/user/{id}/edit', [UserController::class, 'edit'])->name('admin.user.edit');
-Route::patch('/admin/user/{id}/edit', [UserController::class, 'update'])->name('admin.user.update');
-Route::delete('/admin/user/{id}/delete', [UserController::class, 'destroy'])->name('admin.user.destroy');
+Route::get('/admin/user/edit/{id}', [UserController::class, 'edit'])->name('admin.user.edit');
+Route::patch('/admin/user/edit/{id}', [UserController::class, 'update'])->name('admin.user.update');
+Route::delete('/admin/user/delete/{id}', [UserController::class, 'destroy'])->name('admin.user.destroy');
 
 Route::get('/backup/dashboard', function () {
     return view('dashboard');

@@ -114,8 +114,6 @@
                     <td class="px-6 py-4 text-sm text-gray-900">Introduction to Laravel</td>
                     <td class="px-6 py-4 text-sm text-gray-900">2023-08-15</td>
                     <td class="px-6 py-4 text-right text-sm font-medium">
-                        <a href="/admin/enrollments/1/edit" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                        <span class="mx-2">|</span>
                         <a href="#" onclick="openDeleteModal(1)" class="text-red-600 hover:text-red-900">Delete</a>
                     </td>
                 </tr>

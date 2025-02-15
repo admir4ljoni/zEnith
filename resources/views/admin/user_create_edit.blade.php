@@ -96,7 +96,7 @@
         <div class="bg-white shadow rounded-lg p-6">
             <form action="{{isset($user) ? route('admin.user.update', $user->id) : route('admin.user.store')}}" method="POST" enctype="multipart/form-data">
                 @csrf
-            @if (isset($user))
+                @if (isset($user))
                     @method('PATCH')
                     <img class="h-32 w-32 rounded-full" src="{{isset($user->profile_picture) ? Storage::url($user->profile_picture) : asset('images/sample1.jpg')}}" alt="User Profile">
                     <div class="mb-4">

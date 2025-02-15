@@ -97,7 +97,7 @@
 <header class="bg-indigo-500">
     <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <h1 class="text-3xl font-bold text-white">Admin Courses Dashboard</h1>
-        <a href="/admin/course/create" class="bg-white text-indigo-600 font-semibold px-4 py-2 rounded-md hover:bg-gray-100">
+        <a href="/admin/course/create-or-edit" class="bg-white text-indigo-600 font-semibold px-4 py-2 rounded-md hover:bg-gray-100">
             Create Course
         </a>
     </div>
@@ -120,21 +120,32 @@
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                 <!-- Example static row; replace with dynamic rows as needed -->
-                <tr>
-                    <td class="px-6 py-4 text-sm text-gray-900">1</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">Introduction to Laravel</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">Programming</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">$49.99</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">Published</td>
-                    <td class="px-6 py-4 text-right text-sm font-medium">
-                        <a href="/admin/courses/1/edit" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                        <span class="mx-2">|</span>
-                        <!-- Delete link triggers the modal with course id 1 -->
-                        <button onclick="openDeleteModal(1)" class="text-red-600 hover:text-red-900">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
+                    @forelse($courses as $course)
+                        <tr>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{$course->id}}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{$course->title}}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{$course->category->name}}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{$course->price}}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{$course->status}}</td>
+                            <td class="px-6 py-4 text-right text-sm font-medium">
+                                <a href="{{route('admin.course.edit', $course->id)}}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                <span class="mx-2">|</span>
+                                <!-- Delete link triggers the modal with course id 1 -->
+                                <button onclick="openDeleteModal({{$course->id}})" class="text-red-600 hover:text-red-900">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td class="px-6 py-4 text-sm text-gray-900">No Data</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">No Data</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">No Data</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">No Data</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">No Data</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">No Data</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -157,7 +168,7 @@
             >
                 Cancel
             </button>
-            <form id="deleteForm" action="" method="POST">
+            <form id="deleteModalForm" action="" method="POST">
                 @csrf
                 @method('DELETE')
                 <button
@@ -177,7 +188,8 @@
 <script>
     let courseIdToDelete = null;
     function openDeleteModal(courseId) {
-        courseIdToDelete = courseId;
+        const deleteForm = document.getElementById('deleteModalForm')
+        deleteForm.action = `/admin/course/delete/${courseId}`;
         document.getElementById('deleteModal').classList.remove('hidden');
     }
     function closeDeleteModal() {
