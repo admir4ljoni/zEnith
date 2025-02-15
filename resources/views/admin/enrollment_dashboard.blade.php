@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard - Courses</title>
+    <title>Admin Dashboard - Enrollments</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50">
@@ -13,9 +13,8 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                    <!-- Dashboard link -->
                     <a href="/dashboard"
-                       class="{{ request()->is('/dashboard') ? 'border-indigo-500 text-gray-900' : 'text-gray-500 hover:text-gray-700 border-transparent' }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                       class="{{ request()->is('/admin/dashboard') ? 'border-indigo-500 text-gray-900' : 'text-gray-500 hover:text-gray-700 border-transparent' }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                         Dashboard
                     </a>
                     <!-- Courses link -->
@@ -30,30 +29,26 @@
                     </a>
                 </div>
             </div>
-
             <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                    <!-- Profile Dropdown for Authenticated Users -->
-                    <div class="ml-3 relative">
-                        <button type="button" id="user-menu-button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false" aria-haspopup="true">
-                            <span class="sr-only">Open user menu</span>
-                            <img class="h-8 w-8 rounded-full" src="{{ asset('images/sample1.jpg') }}" alt="User Profile">
-                        </button>
-                        <!-- Dropdown menu -->
-                        <div id="profile-dropdown-menu" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 hidden" role="menu">
-                            <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                                Your Profile
-                            </a>
-                            <form method="POST" action="/logout">
-                                @csrf
-                                <button type="submit" class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                                    Sign out
-                                </button>
-                            </form>
-                        </div>
+                <!-- Profile Dropdown (Assuming admin is always logged in) -->
+                <div class="ml-3 relative">
+                    <button type="button" id="user-menu-button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false" aria-haspopup="true">
+                        <span class="sr-only">Open user menu</span>
+                        <img class="h-8 w-8 rounded-full" src="{{ asset('images/sample1.jpg') }}" alt="User Profile">
+                    </button>
+                    <div id="profile-dropdown-menu" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 hidden" role="menu">
+                        <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                            Your Profile
+                        </a>
+                        <form method="POST" action="/logout">
+                            @csrf
+                            <button type="submit" class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                Sign out
+                            </button>
+                        </form>
                     </div>
+                </div>
             </div>
-
-            <!-- Mobile menu button -->
             <div class="-mr-2 flex items-center sm:hidden">
                 <button type="button" id="mobile-menu-button" class="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-controls="mobile-menu" aria-expanded="false">
                     <span class="sr-only">Open main menu</span>
@@ -79,16 +74,12 @@
                class="{{ request()->is('admin/users*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                 Users
             </a>
-                <a href="/profile"
-                   class="{{ request()->is('profile*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                    Profile
-                </a>
-                <form method="POST" action="/logout" class="block">
-                    @csrf
-                    <button type="submit" class="w-full text-left block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">
-                        Logout
-                    </button>
-                </form>
+            <form method="POST" action="/logout" class="block">
+                @csrf
+                <button type="submit" class="w-full text-left block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">
+                    Logout
+                </button>
+            </form>
         </div>
     </div>
 </nav>
@@ -96,14 +87,12 @@
 <!-- Hero Section -->
 <header class="bg-indigo-500">
     <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-        <h1 class="text-3xl font-bold text-white">Admin Courses Dashboard</h1>
-        <a href="/admin/course/create" class="bg-white text-indigo-600 font-semibold px-4 py-2 rounded-md hover:bg-gray-100">
-            Create Course
-        </a>
+        <h1 class="text-3xl font-bold text-white">Enrollments Dashboard</h1>
+
     </div>
 </header>
 
-<!-- Main Content: Courses Table -->
+<!-- Main Content: Enrollments Table -->
 <main class="py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white shadow rounded-lg p-6">
@@ -111,10 +100,9 @@
                 <thead class="bg-gray-50">
                 <tr>
                     <th class="px-6 py-3 w-16 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                    <th class="px-6 py-3 w-2/6 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
-                    <th class="px-6 py-3 w-1/6 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                    <th class="px-6 py-3 w-1/6 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                    <th class="px-6 py-3 w-1/6 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                    <th class="px-6 py-3 w-2/6 text-left text-xs font-medium text-gray-500 uppercase">Student</th>
+                    <th class="px-6 py-3 w-2/6 text-left text-xs font-medium text-gray-500 uppercase">Course</th>
+                    <th class="px-6 py-3 w-1/6 text-left text-xs font-medium text-gray-500 uppercase">Enrolled On</th>
                     <th class="px-6 py-3 w-1/6 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
                 </tr>
                 </thead>
@@ -122,26 +110,23 @@
                 <!-- Example static row; replace with dynamic rows as needed -->
                 <tr>
                     <td class="px-6 py-4 text-sm text-gray-900">1</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">Alice Johnson</td>
                     <td class="px-6 py-4 text-sm text-gray-900">Introduction to Laravel</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">Programming</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">$49.99</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">Published</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">2023-08-15</td>
                     <td class="px-6 py-4 text-right text-sm font-medium">
-                        <a href="/admin/courses/1/edit" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        <a href="/admin/enrollments/1/edit" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                         <span class="mx-2">|</span>
-                        <!-- Delete link triggers the modal with course id 1 -->
-                        <button onclick="openDeleteModal(1)" class="text-red-600 hover:text-red-900">
-                            Delete
-                        </button>
+                        <a href="#" onclick="openDeleteModal(1)" class="text-red-600 hover:text-red-900">Delete</a>
                     </td>
                 </tr>
+                <!-- Additional rows can be added -->
                 </tbody>
             </table>
         </div>
     </div>
 </main>
 
-<!-- Delete Confirmation Modal -->
+<!-- Delete Confirmation Modal (if needed for enrollments) -->
 <div
     id="deleteModal"
     class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50"
@@ -171,28 +156,24 @@
     </div>
 </div>
 
-
-
 <!-- Scripts -->
 <script>
-    let courseIdToDelete = null;
-    function openDeleteModal(courseId) {
-        courseIdToDelete = courseId;
+    let enrollmentIdToDelete = null;
+    function openDeleteModal(enrollmentId) {
+        enrollmentIdToDelete = enrollmentId;
         document.getElementById('deleteModal').classList.remove('hidden');
     }
     function closeDeleteModal() {
         document.getElementById('deleteModal').classList.add('hidden');
-        courseIdToDelete = null;
+        enrollmentIdToDelete = null;
     }
     function confirmDelete() {
-        // For this static UI example, we'll just alert. Replace this with your deletion logic.
-        alert("Deleting course with ID: " + courseIdToDelete);
+        alert("Deleting enrollment with ID: " + enrollmentIdToDelete);
         closeDeleteModal();
-        // In production, you might redirect or submit a form here.
+        // In production, submit a form or send a DELETE request.
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        // Mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         mobileMenuButton.addEventListener('click', function () {
@@ -201,7 +182,6 @@
             mobileMenuButton.setAttribute('aria-expanded', !expanded);
         });
 
-        // Profile dropdown toggle (if exists)
         const profileButton = document.getElementById('user-menu-button');
         const profileDropdown = document.getElementById('profile-dropdown-menu');
         if (profileButton) {
@@ -210,7 +190,6 @@
                 profileDropdown.classList.toggle('hidden');
             });
         }
-        // Hide profile dropdown when clicking outside
         document.addEventListener('click', function (e) {
             if (profileDropdown && !profileButton.contains(e.target) && !profileDropdown.contains(e.target)) {
                 profileDropdown.classList.add('hidden');

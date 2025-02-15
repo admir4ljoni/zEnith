@@ -8,8 +8,17 @@ class CourseController extends Controller
 {
     public function index()
     {
+        if (request()->is('/courses')) {
+            return view('home.courses');
+        }
+
+        if (request()->is('dashboard')) {
+            return view('admin.dashboard');
+        }
+
         return view('home.courses');
     }
+
 
     public function show()
     {
@@ -18,6 +27,11 @@ class CourseController extends Controller
 
     public function create()
     {
-        return view('admin.create_course');
+        return view('admin.course_create');
+    }
+
+    public function edit()
+    {
+        return view('admin.course_edit');
     }
 }

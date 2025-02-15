@@ -14,24 +14,23 @@
             <div class="flex">
                 <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                     <!-- Dashboard link -->
-                    <a href="/"
-                       class="{{ request()->is('/') ? 'border-indigo-500 text-gray-900' : 'text-gray-500 hover:text-gray-700 border-transparent' }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a href="/dashboard"
+                       class="{{ request()->is('/admin/dashboard') ? 'border-indigo-500 text-gray-900' : 'text-gray-500 hover:text-gray-700 border-transparent' }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                         Dashboard
                     </a>
                     <!-- Courses link -->
-                    <a href="/courses"
+                    <a href="/admin/enrollments"
                        class="{{ request()->is('courses*') && !request()->is('admin/courses*') ? 'border-indigo-500 text-gray-900' : 'text-gray-500 hover:text-gray-700 border-transparent' }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                        Courses
+                        Enrollments
                     </a>
                     <!-- Admin Courses link -->
-                    <a href="/admin/courses"
+                    <a href="/admin/users"
                        class="{{ request()->is('admin/courses*') ? 'border-indigo-500 text-gray-900' : 'text-gray-500 hover:text-gray-700 border-transparent' }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                        Admin Courses
+                        Users
                     </a>
                 </div>
             </div>
             <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                @auth
                     <!-- Profile Dropdown for Authenticated Users -->
                     <div class="ml-3 relative">
                         <button type="button" id="user-menu-button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-expanded="false" aria-haspopup="true">
@@ -51,14 +50,6 @@
                             </form>
                         </div>
                     </div>
-                @else
-                    <!-- Register Link for Guests -->
-                    <div class="ml-3">
-                        <a href="/register" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700">
-                            Register
-                        </a>
-                    </div>
-                @endauth
             </div>
             <!-- Mobile menu button -->
             <div class="-mr-2 flex items-center sm:hidden">
@@ -74,17 +65,17 @@
     <!-- Mobile Menu -->
     <div class="hidden sm:hidden" id="mobile-menu">
         <div class="pt-2 pb-3 space-y-1">
-            <a href="/"
-               class="{{ request()->is('/') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+            <a href="/dashboard"
+               class="{{ request()->is('/dashboard') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                 Dashboard
             </a>
-            <a href="/courses"
-               class="{{ request()->is('courses*') && !request()->is('admin/courses*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                Courses
+            <a href="/admin/enrollments"
+               class="{{ request()->is('/admin/enrollments*') && !request()->is('admin/enrollments*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                Enrollments
             </a>
-            <a href="/admin/courses"
-               class="{{ request()->is('admin/courses*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                Admin Courses
+            <a href="/admin/users"
+               class="{{ request()->is('admin/users*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                Users
             </a>
             @auth
                 <a href="/profile"
@@ -193,6 +184,40 @@
                 </div>
             </form>
         </div>
+
+        <section class="bg-white shadow rounded-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800">Lessons</h2>
+                <!-- Add Lesson Button -->
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Add Lesson
+                </button>
+            </div>
+            <!-- Lessons Table -->
+            <table class="table-auto w-full">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-4 py-2 w-16 text-left text-xs font-medium text-gray-500 uppercase">#</th>
+                    <th class="px-4 py-2 w-3/6 text-left text-xs font-medium text-gray-500 uppercase">Lesson Title</th>
+                    <th class="px-4 py-2 w-1/6 text-left text-xs font-medium text-gray-500 uppercase">Order</th>
+                    <th class="px-4 py-2 w-1/6 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                <!-- Example static lesson row -->
+                <tr>
+                    <td class="px-4 py-2 text-sm text-gray-900">1</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">Lesson 1: Introduction</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">1</td>
+                    <td class="px-4 py-2 text-right text-sm font-medium">
+                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        <span class="mx-2">|</span>
+                        <button onclick="openDeleteModal(1)" class="text-red-600 hover:text-red-900">Delete</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
     </div>
 </main>
 
@@ -203,8 +228,52 @@
     </div>
 </footer>
 
+<div
+    id="deleteModal"
+    class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50"
+>
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-md mx-4">
+        <h2 class="text-xl font-bold mb-4">Confirm Delete</h2>
+        <p class="mb-4">Are you sure you want to delete this course? This action cannot be undone.</p>
+        <div class="flex justify-end space-x-4">
+            <button
+                id="cancelDelete"
+                onclick="closeDeleteModal()"
+                class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+            >
+                Cancel
+            </button>
+            <form id="deleteForm" action="" method="POST">
+                @csrf
+                @method('DELETE')
+                <button
+                    type="submit"
+                    class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                    Delete
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- Scripts -->
 <script>
+    function openDeleteModal(courseId) {
+        courseIdToDelete = courseId;
+        document.getElementById('deleteModal').classList.remove('hidden');
+    }
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+        courseIdToDelete = null;
+    }
+    function confirmDelete() {
+        // For this static UI example, we'll just alert. Replace this with your deletion logic.
+        alert("Deleting course with ID: " + courseIdToDelete);
+        closeDeleteModal();
+        // In production, you might redirect or submit a form here.
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         // Mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');

@@ -69,17 +69,14 @@
     <!-- Mobile Menu -->
     <div class="hidden sm:hidden" id="mobile-menu">
         <div class="pt-2 pb-3 space-y-1">
-            <a href="/"
-               class="{{ request()->is('/') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+            <a href="/" class="{{ request()->is('/') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                 Dashboard
             </a>
-            <a href="/courses"
-               class="{{ request()->is('courses*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+            <a href="/courses" class="{{ request()->is('courses*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                 Courses
             </a>
             @auth
-                <a href="/profile"
-                   class="{{ request()->is('profile*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                <a href="/profile" class="{{ request()->is('profile*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                     Profile
                 </a>
                 <form method="POST" action="/logout" class="block">
@@ -89,8 +86,7 @@
                     </button>
                 </form>
             @else
-                <a href="/register"
-                   class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">
+                <a href="/register" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 text-base font-medium">
                     Register
                 </a>
             @endauth
@@ -101,7 +97,7 @@
 <!-- Hero Section -->
 <header class="bg-indigo-500">
     <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <h1 class="text-4xl font-bold text-white">Course Title: Learn Laravel</h1>
+        <h1 class="text-4xl font-bold text-white">Course Detail: Learn Laravel</h1>
         <p class="mt-2 text-lg text-indigo-100">A comprehensive course to master Laravel.</p>
     </div>
 </header>
@@ -109,7 +105,6 @@
 <!-- Main Content: Course Detail -->
 <main class="py-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Always side by side with 'flex' -->
         <div class="flex gap-6">
             <!-- Sidebar: Lessons List -->
             <aside class="w-1/4 bg-white shadow rounded-lg p-4">
@@ -157,6 +152,47 @@
         </div>
     </div>
 </main>
+
+<!-- Comment Section -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Comments</h2>
+
+        <!-- Existing Comments (Static for now) -->
+        <div class="space-y-4 mb-6">
+            <div class="border p-4 rounded">
+                <p class="text-gray-700">Great course! Learned a lot.</p>
+                <p class="text-xs text-gray-500">By Jane Doe on 2025-02-15</p>
+            </div>
+            <div class="border p-4 rounded">
+                <p class="text-gray-700">Very informative and well-structured.</p>
+                <p class="text-xs text-gray-500">By Bob Smith on 2025-02-16</p>
+            </div>
+        </div>
+
+        <!-- Comment Form -->
+        @auth
+            <form action="#" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label for="comment" class="block text-sm font-medium text-gray-700">Add a Comment</label>
+                    <textarea id="comment" name="comment" rows="4" placeholder="Write your comment here..." class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md">
+                        Post Comment
+                    </button>
+                </div>
+            </form>
+        @else
+            <div class="text-center">
+                <p class="text-gray-600">
+                    Please <a href="/register" class="text-indigo-600 underline">register</a> first to comment.
+                </p>
+            </div>
+        @endauth
+    </div>
+</section>
 
 <!-- Footer -->
 <footer class="bg-gray-800">
