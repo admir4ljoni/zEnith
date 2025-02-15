@@ -29,13 +29,14 @@ Route::get('/admin/user/create', [UserController::class, 'create'])->name('admin
 Route::post('/admin/user/create', [UserController::class, 'store'])->name('admin.user.store');
 Route::get('/admin/user/{id}/edit', [UserController::class, 'edit'])->name('admin.user.edit');
 Route::patch('/admin/user/{id}/edit', [UserController::class, 'update'])->name('admin.user.update');
+Route::delete('/admin/user/{id}/delete', [UserController::class, 'destroy'])->name('admin.user.destroy');
 
 Route::get('/backup/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('backup_dashboard');
 
 
-Route::middleware('auth', 'role:admin')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

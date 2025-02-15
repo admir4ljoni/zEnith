@@ -96,44 +96,82 @@
         <div class="bg-white shadow rounded-lg p-6">
             <form action="{{isset($user) ? route('admin.user.update', $user->id) : route('admin.user.store')}}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @if (isset($user))
+            @if (isset($user))
                     @method('PATCH')
+                    <img class="h-32 w-32 rounded-full" src="{{isset($user->profile_picture) ? Storage::url($user->profile_picture) : asset('images/sample1.jpg')}}" alt="User Profile">
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                        <input value="{{$user->name ?? old('name')}}" type="text" id="name" name="name" placeholder="e.g., John Doe" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Email -->
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input value="{{$user->email ?? old('email')}}" type="email" id="email" name="email" placeholder="john@example.com" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Password -->
+                    <div class="mb-4">
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="password" name="password" placeholder="********" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Password Confirmation -->
+                    <div class="mb-4">
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Retype password</label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" placeholder="********" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Profile Picture -->
+                    <div class="mb-4">
+                        <label for="profile_picture" class="block text-sm font-medium text-gray-700">Profile Picture</label>
+                        <input type="file" id="profile_picture" name="profile_picture" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Role -->
+                    <div class="mb-4">
+                        <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                        <select id="role" name="role" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="">-- Select Role --</option>
+                            <option value="admin" {{ (isset($user) && $user->role === 'admin') || old('role') === 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="instructor" {{ (isset($user) && $user->role === 'instructor') || old('role') === 'instructor' ? 'selected' : '' }}>Instructor</option>
+                            <option value="student" {{ (isset($user) && $user->role === 'student') || old('role') === 'student' ? 'selected' : '' }}>Student</option>
+                        </select>
+                    </div>
+                @else
+                    <img class="h-32 w-32 rounded-full" src="{{asset('images/sample1.jpg')}}" alt="User Profile">
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                        <input required value="{{$user->name ?? old('name')}}" type="text" id="name" name="name" placeholder="e.g., John Doe" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Email -->
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input required value="{{$user->email ?? old('email')}}" type="email" id="email" name="email" placeholder="john@example.com" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Password -->
+                    <div class="mb-4">
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input required type="password" id="password" name="password" placeholder="********" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Password Confirmation -->
+                    <div class="mb-4">
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Retype password</label>
+                        <input required type="password" id="password_confirmation" name="password_confirmation" placeholder="********" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Profile Picture -->
+                    <div class="mb-4">
+                        <label for="profile_picture" class="block text-sm font-medium text-gray-700">Profile Picture</label>
+                        <input type="file" id="profile_picture" name="profile_picture" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Role -->
+                    <div class="mb-4">
+                        <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                        <select required id="role" name="role" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="">-- Select Role --</option>
+                            <option value="admin" {{ (isset($user) && $user->role === 'admin') || old('role') === 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="instructor" {{ (isset($user) && $user->role === 'instructor') || old('role') === 'instructor' ? 'selected' : '' }}>Instructor</option>
+                            <option value="student" {{ (isset($user) && $user->role === 'student') || old('role') === 'student' ? 'selected' : '' }}>Student</option>
+                        </select>
+                    </div>
                 @endif
                 <!-- Name -->
-                <div class="mb-4">
-                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                    <input value="{{$user->name ?? old('name')}}" type="text" id="name" name="name" placeholder="e.g., John Doe" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-                <!-- Email -->
-                <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <input value="{{$user->email ?? old('email')}}" type="email" id="email" name="email" placeholder="john@example.com" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-                <!-- Password -->
-                <div class="mb-4">
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input type="password" id="password" name="password" placeholder="********" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-                <!-- Password Confirmation -->
-                <div class="mb-4">
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Retype password</label>
-                    <input type="password" id="password_confirmation" name="password_confirmation" placeholder="********" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-                <!-- Profile Picture -->
-                <div class="mb-4">
-                    <label for="profile_picture" class="block text-sm font-medium text-gray-700">Profile Picture</label>
-                    <input type="file" id="profile_picture" name="profile_picture" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-                <!-- Role -->
-                <div class="mb-4">
-                    <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-                    <select id="role" name="role" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                        <option value="">-- Select Role --</option>
-                        <option value="admin" {{ (isset($user) && $user->role === 'admin') || old('role') === 'admin' ? 'selected' : '' }}>Admin</option>
-                        <option value="instructor" {{ (isset($user) && $user->role === 'instructor') || old('role') === 'instructor' ? 'selected' : '' }}>Instructor</option>
-                        <option value="student" {{ (isset($user) && $user->role === 'student') || old('role') === 'student' ? 'selected' : '' }}>Student</option>
-                    </select>
-                </div>
+
                 <!-- Submit Button -->
                 <div class="flex justify-end">
                     <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

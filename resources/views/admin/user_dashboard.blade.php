@@ -119,15 +119,16 @@
                         <td class="px-6 py-4 text-sm text-gray-900">{{$user->email}}</td>
                         <td class="px-6 py-4 text-sm text-gray-900">{{$user->role}}</td>
                         <td class="px-6 py-4 text-right text-sm font-medium">
-                            <a href="/admin/users/1/edit" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                            <a href="{{route('admin.user.edit', $user->id)}}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                             <span class="mx-2">|</span>
-                            <button onclick="openDeleteModal(1)" class="text-red-600 hover:text-red-900">Delete</button>
+                            <button onclick="openDeleteModal({{$user->id}})" class="text-red-600 hover:text-red-900">Delete</button>
                         </td>
                     </tr>
                 @endforeach
                 <!-- Additional rows here -->
                 </tbody>
             </table>
+            {{ $users->links() }}
         </div>
     </div>
 </main>
@@ -141,9 +142,14 @@
             <button id="cancelDelete" onclick="closeDeleteModal()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
                 Cancel
             </button>
-            <button onclick="confirmDelete()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
-                Delete
-            </button>
+            <form action="" id="deleteModalForm" method="post">
+                @csrf
+                @method('DELETE')
+                <button type=submit class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                    Delete
+                </button>
+            </form>
+
         </div>
     </div>
 </div>
@@ -152,7 +158,8 @@
 <script>
     let userIdToDelete = null;
     function openDeleteModal(userId) {
-        userIdToDelete = userId;
+        const deleteForm = document.getElementById('deleteModalForm')
+        deleteForm.action = `/admin/user/${userId}/delete`;
         document.getElementById('deleteModal').classList.remove('hidden');
     }
     function closeDeleteModal() {

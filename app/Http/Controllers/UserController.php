@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 
 class UserController extends Controller
@@ -17,7 +19,7 @@ class UserController extends Controller
         }
 
         if (request()->is('admin/users')) {
-            $users = User::paginate(10);
+            $users = User::simplePaginate(10);
             return view('admin.user_dashboard', compact('users'));
         }
 
@@ -58,4 +60,42 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         return view ('admin.user_create_edit', compact('user'));
     }
+
+    public function update(Request $request, $id) {
+        $user = User::findOrFail($id);
+
+        $data = $request->validate([
+            'name' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+            'profile_picture' => ['nullable', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
+            'role' => ['nullable', 'in:admin,instructor,student']
+        ]);
+        if (empty($request->password)) {
+            unset($data['password']);
+        } else {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        if ($request->hasFile('profile_picture')) {
+            if ($user->profile_picture) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+            $fileName = Str::random(20) . '.' . $request->file('profile_picture')->getClientOriginalExtension();
+            $picturePath = $request->file('profile_picture')
+                ->storeAs("users/profile_picture/{$user->id}", $fileName, 'public');
+            $data['profile_picture'] = $picturePath;
+
+        }
+
+        $user->update($data);
+        return redirect()->route('admin.user.index')->with('success', 'User updated successfully');
+    }
+
+    public function destroy($id) {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect()->route('admin.user.index')->with('success', 'User deleted successfully');
+    }
+
 }
