@@ -298,7 +298,7 @@
             >
                 Cancel
             </button>
-            <form id="deleteForm" action="" method="POST">
+            <form id="deleteModalForm" action="" method="POST">
                 @csrf
                 @method('DELETE')
                 <button

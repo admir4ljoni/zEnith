@@ -27,7 +27,13 @@ class Lesson extends Model
     {
         static::creating(function ($lesson) {
             if (empty($lesson->slug)) {
-                $lesson->slug = Str::slug($lesson->title);
+                $slug = Str::slug($lesson->title);
+                $originaSlug = $slug;
+                $count = 1;
+                while (static::withTrashed()->where('slug', $slug)->exists()) {
+                    $slug = $originaSlug . '-' . $count++;
+                }
+                $lesson->slug = $slug;
             }
         });
     }

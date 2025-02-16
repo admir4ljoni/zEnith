@@ -27,7 +27,7 @@ class LessonController extends Controller
         ]);
 
         $lesson = Lesson::create($data);
-        return redirect()->route('admin.course.lesson.edit', [$course_id, $lesson->course_id])->with('success', 'Lesson created successfully');
+        return redirect()->route('admin.course.lesson.edit', [$course_id, $lesson->id])->with('success', 'Lesson created successfully');
     }
 
     public function update($course_id, $id, Request $request) {
@@ -46,5 +46,7 @@ class LessonController extends Controller
     public function destroy($course_id, $id) {
         $lesson = Lesson::findOrFail($id);
         $lesson->delete();
+
+        return redirect()->back()->with('success', 'Lesson deleted successfully');
     }
 }
