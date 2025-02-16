@@ -106,22 +106,39 @@
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white shadow rounded-lg p-6">
             <!-- Static Lesson Form UI (for adding or editing) -->
-            <form action="#" method="POST" enctype="multipart/form-data">
-                <!-- Lesson Title -->
-                <div class="mb-4">
-                    <label for="lesson_title" class="block text-sm font-medium text-gray-700">Lesson Title</label>
-                    <input type="text" name="lesson_title" id="lesson_title" placeholder="e.g., Introduction to Laravel" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-                <!-- Lesson Order -->
-                <div class="mb-4">
-                    <label for="order" class="block text-sm font-medium text-gray-700">Order</label>
-                    <input type="number" name="order" id="order" placeholder="e.g., 1" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-                <!-- Lesson Content (CKEditor) -->
-                <div class="mb-4">
-                    <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
-                    <textarea name="content" id="content" rows="6" placeholder="Lesson content..." class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-                </div>
+            <form action="{{isset($lesson) ? route('admin.course.lesson.update', [$course_id, $lesson->id]) : route('admin.course.lesson.store', $course_id)}}" method="POST" enctype="multipart/form-data">
+                @if (isset($lesson))
+                    @method('PATCH')
+                    <div class="mb-4">
+                        <label for="lesson_title" class="block text-sm font-medium text-gray-700">Lesson Title</label>
+                        <input value="{{$lesson->title ?? old('title')}}" type="text" name="title" id="lesson_title" placeholder="e.g., Introduction to Laravel" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Lesson Order -->
+                    <div class="mb-4">
+                        <label for="order" class="block text-sm font-medium text-gray-700">Order</label>
+                        <input value="{{$lesson->order ?? old('order')}}" type="number" name="order" id="order" placeholder="e.g., 1" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Lesson Content (CKEditor) -->
+                    <div class="mb-4">
+                        <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+                        <textarea name="content" id="content" rows="6" placeholder="Lesson content..." class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                    </div>
+                @else
+                    <div class="mb-4">
+                        <label for="lesson_title" class="block text-sm font-medium text-gray-700">Lesson Title</label>
+                        <input required value="{{old('title')}}" type="text" name="title" id="lesson_title" placeholder="e.g., Introduction to Laravel" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Lesson Order -->
+                    <div class="mb-4">
+                        <label for="order" class="block text-sm font-medium text-gray-700">Order</label>
+                        <input required value="{{old('order')}}" type="number" name="order" id="order" placeholder="e.g., 1" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <!-- Lesson Content (CKEditor) -->
+                    <div class="mb-4">
+                        <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+                        <textarea required name="content" id="content" rows="6" placeholder="Lesson content..." class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                    </div>
+                @endif
                 <!-- Submit Button -->
                 <div class="flex justify-end">
                     <!-- Change button text based on context (Add or Update) -->
@@ -134,12 +151,6 @@
     </div>
 </main>
 
-<!-- Footer -->
-<footer class="bg-gray-800 mt-10">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <p class="text-center text-gray-300 text-sm">© 2025 zEnith. All rights reserved.</p>
-    </div>
-</footer>
 
 <!-- Scripts -->
 <script>
