@@ -159,7 +159,7 @@
     let userIdToDelete = null;
     function openDeleteModal(userId) {
         const deleteForm = document.getElementById('deleteModalForm')
-        deleteForm.action = `/admin/user/${userId}/delete`;
+        deleteForm.action = `/admin/user/delete/${userId}`;
         document.getElementById('deleteModal').classList.remove('hidden');
     }
     function closeDeleteModal() {

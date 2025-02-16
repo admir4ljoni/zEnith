@@ -236,9 +236,11 @@
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-2xl font-bold text-gray-800">Lessons</h2>
                     <!-- Add Lesson Button -->
-                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Add Lesson
-                    </button>
+                    <a href="{{route('admin.course.lesson.edit', $course->id)}}">
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Add Lesson
+                        </button>
+                    </a>
                 </div>
                 <!-- Lessons Table -->
                 <table class="table-auto w-full">
@@ -252,27 +254,27 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                     <!-- Example static lesson row -->
-                    <tr>
-                        <td class="px-4 py-2 text-sm text-gray-900">1</td>
-                        <td class="px-4 py-2 text-sm text-gray-900">Lesson 1: Introduction</td>
-                        <td class="px-4 py-2 text-sm text-gray-900">1</td>
+                    @forelse($lessons as $lesson)
+                        <tr>
+                            <td class="px-4 py-2 text-sm text-gray-900">{{$lesson->id}}</td>
+                            <td class="px-4 py-2 text-sm text-gray-900">{{$lesson->title}}</td>
+                            <td class="px-4 py-2 text-sm text-gray-900">{{$lesson->order}}</td>
+                            <td class="px-4 py-2 text-right text-sm font-medium">
+                                <a href="{{route('admin.course.lesson.edit', [$course->id, $lesson->id])}}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                <span class="mx-2">|</span>
+                                <button onclick="openDeleteModal({{$lesson->id}})" class="text-red-600 hover:text-red-900">Delete</button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                        <td class="px-4 py-2 text-sm text-gray-900">No Lessons</td>
+                        <td class="px-4 py-2 text-sm text-gray-900">No Lessons</td>
+                        <td class="px-4 py-2 text-sm text-gray-900">No Lessons</td>
                         <td class="px-4 py-2 text-right text-sm font-medium">
-                            <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                            <span class="mx-2">|</span>
-                            <button onclick="openDeleteModal(1)" class="text-red-600 hover:text-red-900">Delete</button>
+                            No Lessons
                         </td>
-                    </tr>
-                    <!-- Example static lesson row -->
-                    <tr>
-                        <td class="px-4 py-2 text-sm text-gray-900">2</td>
-                        <td class="px-4 py-2 text-sm text-gray-900">Lesson 2: Setup</td>
-                        <td class="px-4 py-2 text-sm text-gray-900">2</td>
-                        <td class="px-4 py-2 text-right text-sm font-medium">
-                            <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                            <span class="mx-2">|</span>
-                            <button onclick="openDeleteModal(1)" class="text-red-600 hover:text-red-900">Delete</button>
-                        </td>
-                    </tr>
+                        </tr>
+                    @endforelse
                     </tbody>
                 </table>
             </section>
@@ -313,8 +315,9 @@
 
 <!-- Scripts -->
 <script>
-    function openDeleteModal(courseId) {
-        courseIdToDelete = courseId;
+    function openDeleteModal(lessonId) {
+        const deleteForm = document.getElementById('deleteModalForm')
+        deleteForm.action = `/admin/course/{course_id}/lesson/delete/${lessonId}`;
         document.getElementById('deleteModal').classList.remove('hidden');
     }
     function closeDeleteModal() {

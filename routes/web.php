@@ -22,6 +22,9 @@ Route::delete('/admin/course/delete/{id}', [CourseController::class, 'destroy'])
 
 // Lessons
 Route::get('/admin/course/{course_id}/lesson/create-or-edit/{id?}', [LessonController::class, 'edit'])->name('admin.course.lesson.edit');
+Route::post('/admin/course/{course_id}/lesson/create', [LessonController::class, 'store'])->name('admin.course.lesson.store');
+Route::patch('/admin/course/{course_id}/lesson/update/{id}', [LessonController::class, 'update'])->name('admin.course.lesson.update');
+Route::delete('/admin/course/{course_id}/lesson/delete/{id}', [LessonController::class, 'destroy'])->name('admin.course.lesson.delete');
 
 // Enrollment
 Route::get('/admin/enrollments', [EnrollmentController::class, 'index'])->name('admin.enrollment.index');

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -68,7 +69,8 @@ class CourseController extends Controller
         $categories = Category::all();
         if ($id) {
             $course = Course::findOrFail($id);
-            return view ('admin.course_create_edit', compact(['course', 'instructors', 'categories']));
+            $lessons = $course->lessons;
+            return view ('admin.course_create_edit', compact(['course', 'instructors', 'categories', 'lessons']));
         }
         return view('admin.course_create_edit', compact(['instructors', 'categories']));
     }
@@ -95,7 +97,7 @@ class CourseController extends Controller
                 ->storeAs("courses/picture/{$course->id}", $fileName, 'public');
             $data['course_picture'] = $filePath;
         }
-        
+
         $course->update($data);
         return redirect()->route('admin.course.edit', $course->id)->with('success', 'Course has been updated.');
     }
