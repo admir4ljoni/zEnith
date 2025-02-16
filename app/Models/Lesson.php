@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Lesson extends Model
 {
@@ -20,5 +21,14 @@ class Lesson extends Model
     public function comments(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public static function booted(): void
+    {
+        static::creating(function ($lesson) {
+            if (empty($lesson->slug)) {
+                $lesson->slug = Str::slug($lesson->title);
+            }
+        });
     }
 }

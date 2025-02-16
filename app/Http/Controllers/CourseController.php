@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CourseController extends Controller
@@ -74,6 +75,7 @@ class CourseController extends Controller
 
     public function update(Request $request, $id)
     {
+        $course = Course::findOrFail($id);
         $data = $request->validate([
             'title' => ['string', 'max:255'],
             'description' => ['string'],
@@ -83,6 +85,19 @@ class CourseController extends Controller
             'category_id' => ['required', 'exists:categories,id'],
             'instructor_id' => ['required', 'exists:users,id'],
         ]);
+
+        if ($request->hasFile('course_picture')) {
+            if ($course->course_picture) {
+                Storage::disk('public')->delete($course->course_picture);
+            }
+            $fileName = Str::random(20) . '.' . $request->file('course_picture')->getClientOriginalExtension();
+            $filePath = $request->course_picture
+                ->storeAs("courses/picture/{$course->id}", $fileName, 'public');
+            $data['course_picture'] = $filePath;
+        }
+        
+        $course->update($data);
+        return redirect()->route('admin.course.edit', $course->id)->with('success', 'Course has been updated.');
     }
 
     public function destroy($id)
